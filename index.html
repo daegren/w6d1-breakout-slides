@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>RevealJS : /Users/dave/Code/lighthouselabs/lectures/ft-web-sep24/w6d1-breakout/notes.md</title>
+  <link rel="stylesheet" href="css/reveal.css">
+  <link rel="stylesheet" href="css/theme/black.css" id="theme">
+
+
+  <!-- For syntax highlighting -->
+  <link rel="stylesheet" href="lib/css/monokai-sublime.css">
+
+
+
+  <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+  <script>
+    document.write('<link rel="stylesheet" href="css/print/' + (window.location.search.match(/print-pdf/gi) ? 'pdf' : 'paper') + '.css" type="text/css" media="print">');
+  </script>
+
+  <style type="text/css">
+    @page {
+      margin: 0;
+      size: auto;
+    }
+  </style>
+
+  <script>
+    if (window.location.search.match(/print-pdf-now/gi)) {
+      window.print();
+    }
+  </script>
+
+</head>
+
+<body>
+
+  <div class="reveal">
+    <div class="slides">
+      <section data-markdown>
+        <script type="text/template">
+# W6D1 - Breakout
+
+## More React
+</script>
+      </section>
+      <section>
+        <section data-markdown>
+          <script type="text/template">
+# Props & State
+</script>
+        </section>
+        <section data-markdown>
+          <script type="text/template">
+## Props
+
+What are props?
+</script>
+        </section>
+        <section data-markdown>
+          <script type="text/template">
+## Props
+
+- Are _facts_ which are passed to a component
+- Similar to function arguments
+</script>
+        </section>
+        <section data-markdown>
+          <script type="text/template">
+## Props
+
+### Example
+
+```jsx
+<Button
+  type="primary" // String
+  onClick={this._handleClick} // Function
+  disabled={false} // Boolean
+>
+  Click Me!
+</Button>
+```
+</script>
+        </section>
+        <section data-markdown>
+          <script type="text/template">
+## Props
+
+### Example
+
+```jsx
+const posts = [{ id: 1, title: "Lorem Dolor", body: "Sit amet ..." }];
+
+// ...
+// We can pass an array as well
+
+<PostList posts={posts} />
+
+// ...
+// Or Even a single object!
+
+<Post post={posts[0]}>
+```
+</script>
+        </section>
+        <section data-markdown>
+          <script type="text/template">
+## State
+
+What is State?
+</script>
+        </section>
+        <section data-markdown>
+          <script type="text/template">
+## State
+
+- State belongs to a component
+- Are values which change over time
+- Can be changed using `setState()`
+</script>
+        </section>
+        <section data-markdown>
+          <script type="text/template">
+## State
+
+### Example
+
+[Counter.jsx](https://github.com/daegren/lhl-sept24-w6d1-breakout/blob/master/src/Counter.js)
+</script>
+        </section>
+      </section>
+      <section>
+        <section data-markdown>
+          <script type="text/template">
+### Functional vs Class <br/> Components
+</script>
+        </section>
+        <section data-markdown>
+          <script type="text/template">
+## Functional Component
+
+```jsx
+const Button = props => {
+  let classes = "btn";
+
+  if (props.type === "primary") {
+    classes += " btn-primary";
+  }
+
+  return (
+    <button
+      className={classes}
+      onClick={props.onClick}
+      disabled={props.disabled}
+    >
+      {props.children}
+    </button>
+  );
+};
+```
+</script>
+        </section>
+        <section data-markdown>
+          <script type="text/template">
+## Functional Components
+
+- Just a function which takes a single argument (`props`) and returns `JSX`
+- Used for simple wrappers of UI elements.
+- Cannot have state
+- Cannot listen to lifecycle callbacks (More about this tomorrow)
+</script>
+        </section>
+        <section data-markdown>
+          <script type="text/template">
+## Class Components
+
+- Can have state (through the constructor and `setState()`)
+- Has a `render` function which returns JSX
+- Can hook into lifecycle callbacks
+</script>
+        </section>
+        <section data-markdown>
+          <script type="text/template">
+## Functional VS Class
+
+| Feature     | Functional | Class |
+| ----------- | :--------: | :---: |
+| Renders JSX |     ✅     |  ✅   |
+| Props       |     ✅     |  ✅   |
+| Has State   |     ❌     |  ✅   |
+| Lifecycle   |     ❌     |  ✅   |
+</script>
+        </section>
+      </section>
+      <section>
+        <section data-markdown>
+          <script type="text/template">
+# JSX
+</script>
+        </section>
+        <section data-markdown>
+          <script type="text/template">
+# JSX
+
+## If statements
+
+### Inline
+
+Use the ternary (`?`) operator
+
+```jsx
+<div>
+  {this.props.disabled ? <span>This component is disabled</span> : null}
+</div>
+```
+
+> N.B. returning `null` renders nothing to the screen
+</script>
+        </section>
+        <section data-markdown>
+          <script type="text/template">
+# JSX
+
+## If statements <br/> (Class Component)
+
+```jsx
+class DemoComponent extends React.Component {
+  // ...
+  render() {
+    return <div>{this._renderDisabled()}</div>;
+  }
+
+  _renderDisabled = () => {
+    if (this.props.disabled) {
+      return <span>This component is disabled</span>;
+    } else {
+      return null;
+    }
+  };
+  // ...
+}
+```
+</script>
+        </section>
+        <section data-markdown>
+          <script type="text/template">
+# JSX
+
+## If statements <br/> (Functional Component)
+
+```jsx
+const DemoComponent = ({ disabled }) => {
+  const _renderDisabled = () => {
+    if (disabled) {
+      return <span>This component is disabled</span>;
+    } else {
+      return null;
+    }
+  };
+
+  return <div>{_renderDisabled()}</div>;
+};
+```
+</script>
+        </section>
+        <section data-markdown>
+          <script type="text/template">
+# JSX
+
+## Loops
+
+Use `Array.prototype.map`
+
+```jsx
+render() {
+  return (
+    <div>
+      {this.props.posts.map(post => {
+        return <Post post={post} key={post.id} />;
+      })}
+    </div>
+  );
+}
+```
+</script>
+        </section>
+      </section>
+      <section data-markdown>
+        <script type="text/template">
+# JSX
+
+## What JSX becomes
+
+```jsx
+<div className="container">
+  <h1>Hello Class!</h1>
+  <Counter />
+</div>
+```
+
+Becomes
+
+```javascript
+React.createElement("div", { className: "container" }, [
+  React.createElement("h1", {}, "Hello Class!"),
+  React.createElement(Counter, {}, null)
+]);
+```
+</script>
+      </section>
+      <section data-markdown>
+        <script type="text/template">
+# Example
+
+## Simple Counter
+
+- Setup simple counter app using `create-react-app`
+- Build a simple counter example
+- Move the Counter to it's own component class
+- Allow a title to be set
+- Allow the step on the counter to be configured
+</script>
+      </section>
+    </div>
+  </div>
+
+  <script src="lib/js/head.min.js"></script>
+  <script src="js/reveal.js"></script>
+
+  <script>
+    function extend() {
+      var target = {};
+      for (var i = 0; i < arguments.length; i++) {
+        var source = arguments[i];
+        for (var key in source) {
+          if (source.hasOwnProperty(key)) {
+            target[key] = source[key];
+          }
+        }
+      }
+      return target;
+    }
+    // Optional libraries used to extend on reveal.js
+    var deps = [
+      { src: 'lib/js/classList.js', condition: function () { return !document.body.classList; } },
+      { src: 'plugin/markdown/marked.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+      { src: 'plugin/markdown/markdown.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+      { src: 'plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } },
+      { src: 'plugin/notes/notes.js', async: true, condition: function () { return !!document.body.classList; } },
+      { src: 'plugin/math/math.js', async: true }
+    ];
+    // default options to init reveal.js
+    var defaultOptions = {
+      controls: true,
+      progress: true,
+      history: true,
+      center: true,
+      transition: 'default',
+      dependencies: deps
+    };
+    // options from URL query string
+    var queryOptions = Reveal.getQueryHash() || {};
+    var options = {
+      "notesSeparator": "note:",
+      "separator": "^[\r\n?|\n]---[\r\n?|\n]$",
+      "verticalSeparator": "^[\r\n?|\n]--[\r\n?|\n]$",
+      "theme": "black",
+      "highlightTheme": "monokai-sublime",
+      "controls": true,
+      "progress": true,
+      "slideNumber": false,
+      "history": true,
+      "keyboard": true,
+      "overview": true,
+      "center": true,
+      "touch": true,
+      "loop": false,
+      "rtl": false,
+      "shuffle": false,
+      "fragments": true,
+      "embedded": false,
+      "help": true,
+      "showNotes": false,
+      "autoSlide": 0,
+      "autoSlideStoppable": true,
+      "mouseWheel": false,
+      "hideAddressBar": true,
+      "previewLinks": false,
+      "transition": "default",
+      "transitionSpeed": "default",
+      "backgroundTransition": "default",
+      "viewDistance": 3,
+      "parallaxBackgroundImage": "",
+      "parallaxBackgroundSize": "",
+      "parallaxBackgroundHorizontal": null,
+      "parallaxBackgroundVertical": null,
+      "slideExplorerEnabled": true,
+      "browserPath": null,
+      "width": 1280,
+      "height": 720,
+      "attributes": ""
+    };
+    options = extend(defaultOptions, options, queryOptions);
+    Reveal.initialize(options);
+
+  </script>
+
+</body>
+
+</html>
